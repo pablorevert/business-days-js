@@ -105,7 +105,7 @@ const businessDays = ({
     countDays(dateStart: string | Date | dayjs.Dayjs, dateEnd: string | Date | dayjs.Dayjs, { excludeInitialDate = true } = {}) {
       const dayJsStart: dayjs.Dayjs = validateDate(dateStart);
       const dayJsEnd: dayjs.Dayjs = validateDate(dateEnd);
-      if (dayJsStart.isAfter(dateEnd)) {
+      if (dayJsStart.isAfter(dayJsEnd)) {
         throw `${dateStart} is after ${dateEnd}. Provide a start date that is earlier than end date in order to calculate days between`;
       }
       let totalDays = 0;
