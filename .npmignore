@@ -1,6 +1,7 @@
+.github/
+src/
 .babelrc
 eslintrc.js
-.github/
 .nvmrc
 .prettierignore
 jest.config.js
