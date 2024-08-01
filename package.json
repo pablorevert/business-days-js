@@ -1,7 +1,7 @@
 {
-  "name": "business-days-js",
-  "version": "2.3.1",
-  "description": "Checks whether a date is on a weekend or a U.S. holiday",
+  "name": "@lainco/business-days-js",
+  "version": "0.1.0",
+  "description": "Checks whether a date is on a weekend or a holiday",
   "source": "src/index.ts",
   "main": "dist/index.umd.js",
   "module": "dist/index.modern.module.js",
@@ -32,9 +32,9 @@
     "pre": "npm version prerelease --preid=alpha",
     "pre-pub": "npm run build && npm publish --tag alpha"
   },
-  "author": "Daniel Simmons-Ritchie",
+  "author": "Pablo A. Revert",
   "license": "MIT",
-  "repository": "simmonsritchie/business-days-js",
+  "repository": "pablorevert/business-days-js",
   "keywords": [
     "business",
     "dates",
