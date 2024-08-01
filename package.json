@@ -1,6 +1,6 @@
 {
   "name": "@lainco/business-days-js",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Checks whether a date is on a weekend or a holiday",
   "source": "src/index.ts",
   "main": "dist/index.umd.js",
