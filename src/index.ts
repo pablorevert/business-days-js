@@ -2,6 +2,7 @@ import Holidays from "date-holidays";
 import dayjs from "dayjs";
 import {
   validateState,
+  validateCountry,
   validateDate,
   filterHolidays,
   addPublicHolidays,
@@ -15,14 +16,20 @@ import {
  * @returns {businessDays} businessDays object
  */
 const businessDays = ({
+  country = "US",
   state = "US",
   excludeHolidays = [],
   addHolidays = [],
 } = {}) => {
   const hd = new Holidays();
-  validateState(state, hd);
+
+  if (country === "US")validateState(state, hd);
+  else validateCountry(country, hd);
+
   const cleanUSState = state.toUpperCase();
-  if (cleanUSState === "US" || cleanUSState === "USA") {
+  if (country !== "US") {
+    hd.init(country);
+  } else if (cleanUSState === "US" || cleanUSState === "USA") {
     hd.init("US");
   } else {
     hd.init("US", cleanUSState);
