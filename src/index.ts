@@ -91,6 +91,7 @@ const businessDays = ({
       if (excludeInitialDate) {
         dayJsObj = dayJsObj.add(1, "day");
       }
+
       while (counter < days) {
         if (this.check(dayJsObj)) {
           counter++;
@@ -101,6 +102,39 @@ const businessDays = ({
       }
       return dayJsObj;
     },
+        /**
+     * Returns and array of business days. First date is excluded from count by default.
+     *
+     * @param {string | Date | dayjs.Dayjs} dateStart - a date to begin calculation from.
+     * @param {string | Date | dayjs.Dayjs} dateEnd - a date to begin calculation from.
+     * @param {bool} [options.excludeInitialDate=true] - whether to exclude the first date when adding.
+     * @returns {dayjs}
+     */
+     getBusinessDays(dateStart: string | Date | dayjs.Dayjs, dateEnd: string | Date | dayjs.Dayjs, { excludeInitialDate = true } = {}) {
+       const dayJsStart: dayjs.Dayjs = validateDate(dateStart);
+       const dayJsEnd: dayjs.Dayjs = validateDate(dateEnd);
+       if (dayJsStart.isAfter(dayJsEnd)) {
+         throw `${dateStart} is after ${dateEnd}. Provide a start date that is earlier than end date in order to calculate days between`;
+       }
+       const businessDays = [];
+       let dateCounter = dayJsStart.clone();
+       if (excludeInitialDate) {
+         dateCounter = dayJsStart.add(1, "day");
+       }
+       while (!dateCounter.isSame(dayJsEnd.add(1, "day"), "day")) {
+         const holidayArr = this.hd.isHoliday(dateCounter.toDate());
+         const dayOfWeek = dateCounter.day();
+         if (
+           !((dayOfWeek === 0) || (dayOfWeek === 6)) &&
+           !(holidayArr && holidayArr[0].type === "public")
+         ) {
+           businessDays.push(dateCounter.clone());
+         }
+         dateCounter = dateCounter.add(1, "day");
+       }
+       return businessDays;
+    },
+
     /**
      * Returns an object with a tally of the number of business days, weekend days, and public holidays between two dates. First date is excluded from count by default.
      *

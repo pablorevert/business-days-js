@@ -209,6 +209,43 @@ test("Adding 15 business days to '2019-12-18' with excludeInitialDate option to 
   expect(addedDate.isSame(expectedDate, "day")).toBe(true);
 });
 
+// GET BUSINESS DAYS
+test("Get business days between '2020-12-21' to '2020-12-21' an empty list", () => {
+  const dates = bDays.getBusinessDays("2020-12-21", "2020-12-21");
+  expect(dates).toEqual([]);
+});
+
+test("Get business days between '2020-12-21' to '2020-12-22' returns 2020-12-22", () => {
+  const dates = bDays.getBusinessDays("2020-12-21", "2020-12-22");
+  expect(dates.length).toBe(1);
+  const expectedDate = dayjs.tz("2020-12-22", DAYJS_TIMEZONE);
+  expect(dates[0].isSame(expectedDate, "day")).toBe(true);
+});
+
+test("Get business days between '2020-12-21' to '2020-12-22' with excludeInitialDate set to false returns 2020-12-21 & 2020-12-22", () => {
+  const dates = bDays.getBusinessDays("2020-12-21", "2020-12-22", {excludeInitialDate: false});
+  expect(dates.length).toBe(2);
+  const expectedDate1 = dayjs.tz("2020-12-21", DAYJS_TIMEZONE);
+  const expectedDate2 = dayjs.tz("2020-12-22", DAYJS_TIMEZONE);
+  expect(dates[0].isSame(expectedDate1, "day")).toBe(true);
+  expect(dates[1].isSame(expectedDate2, "day")).toBe(true);
+});
+
+test("Get business days between '2020-12-20' to '2021-01-05' with excludeInitialDate set to false returns expected dates", () => {
+  const dates = bDays.getBusinessDays("2020-12-20", "2021-01-05", {excludeInitialDate: false});
+  expect(dates.length).toBe(10);
+  expect(dates[0].isSame(dayjs.tz("2020-12-21", DAYJS_TIMEZONE), "day")).toBe(true);
+  expect(dates[1].isSame(dayjs.tz("2020-12-22", DAYJS_TIMEZONE), "day")).toBe(true);
+  expect(dates[2].isSame(dayjs.tz("2020-12-23", DAYJS_TIMEZONE), "day")).toBe(true);
+  expect(dates[3].isSame(dayjs.tz("2020-12-24", DAYJS_TIMEZONE), "day")).toBe(true);
+  expect(dates[4].isSame(dayjs.tz("2020-12-28", DAYJS_TIMEZONE), "day")).toBe(true);
+  expect(dates[5].isSame(dayjs.tz("2020-12-29", DAYJS_TIMEZONE), "day")).toBe(true);
+  expect(dates[6].isSame(dayjs.tz("2020-12-30", DAYJS_TIMEZONE), "day")).toBe(true);
+  expect(dates[7].isSame(dayjs.tz("2020-12-31", DAYJS_TIMEZONE), "day")).toBe(true);
+  expect(dates[8].isSame(dayjs.tz("2021-01-04", DAYJS_TIMEZONE), "day")).toBe(true);
+  expect(dates[9].isSame(dayjs.tz("2021-01-05", DAYJS_TIMEZONE), "day")).toBe(true);
+});
+
 // COUNT DAYS
 test("Count days between '2020-12-20' to '2020-12-20' returns 0 or an empty list for all tallies", () => {
   const counts = bDays.countDays("2020-12-20", "2020-12-20");
